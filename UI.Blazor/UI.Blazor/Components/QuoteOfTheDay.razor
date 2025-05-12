@@ -1,0 +1,28 @@
+﻿<div class="container">
+    <div class="text-center">
+        <div class="p-2 rounded-3">
+            <h5 class="display-6 py-3">@Title</h5>
+            <p class="text-center">
+                <!-- BILD -->
+            </p>
+            <blockquote class="text-center">
+                <p class="lead fw-bold" id="quote"><!-- SPRUCH --></p>
+                <cite>
+                    <span><!-- AuthorName --> - <!-- Author Description --></span>
+                    <br />
+                    <span>
+                        <!-- Birthdate -->
+                    </span>
+                </cite>
+            </blockquote>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string? Title { get; set; }
+
+    
+}
