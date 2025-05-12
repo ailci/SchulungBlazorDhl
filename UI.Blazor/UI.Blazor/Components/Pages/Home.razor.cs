@@ -4,6 +4,7 @@ namespace UI.Blazor.Components.Pages;
 public partial class Home
 {
     public QuoteOfTheDayViewModel? QotdViewModel { get; set; }
+    private readonly string _color = "text-primary";
 
     protected override void OnInitialized()
     {
