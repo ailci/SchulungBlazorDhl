@@ -1,0 +1,19 @@
+﻿@if (!string.IsNullOrEmpty(ImageMimeType) && Image is not null)
+{
+    <img width="100" src="data:@ImageMimeType;base64,@Convert.ToBase64String(Image)" @attributes="AdditionalAttributes" />
+}
+else
+{
+    <img width="100" src="https://place-hold.it/150" @attributes="AdditionalAttributes" />
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public byte[]? Image { get; set; }
+
+    [Parameter, EditorRequired]
+    public string? ImageMimeType { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string,object>? AdditionalAttributes { get; set; }
+}
