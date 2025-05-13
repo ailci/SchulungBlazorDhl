@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.ViewModels.Author;
 
 namespace Application.Contracts.Services;
 
-public interface IServiceManager
+public interface IAuthorService
 {
-    IQotdService QotdService { get; }
-    IAuthorService AuthorService { get; }
+    Task<IEnumerable<AuthorViewModel>> GetAuthorsAsync();
 }

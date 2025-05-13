@@ -1,0 +1,47 @@
+﻿@page "/authors/overview"
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@if (AuthorsVm is null || !AuthorsVm.Any())
+{
+    <div>Daten werden geladen...</div>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Beschreibung</th>
+            <th>Geburtsdatum</th>
+            <th>Aktion</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var author in AuthorsVm)
+        {
+            <tr>
+                <td>
+                    <DataImageUri ImageMimeType="@author.PhotoMimeType"
+                                  Image="@author.Photo"
+                                  alt="@author.Name" width="100">
+                    </DataImageUri>
+                </td>
+                <td>
+                    @author.Name
+                </td>
+                <td>
+                    @author.Description
+                </td>
+                <td>
+                    @(author.BirthDate is not null ? author.BirthDate.Value.ToShortDateString() : "k.A.")
+                </td>
+                <td>
+                   <!-- Aktion --> 
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

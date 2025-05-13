@@ -1,0 +1,20 @@
+using Application.Contracts.Services;
+using Application.ViewModels.Author;
+using Microsoft.AspNetCore.Components;
+
+namespace UI.Blazor.Components.Pages.Author;
+public partial class Overview
+{
+    [Inject] public IServiceManager ServiceManager { get; set; } = null!;
+    public IEnumerable<AuthorViewModel>? AuthorsVm { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAuthors();
+    }
+
+    public async Task GetAuthors()
+    {
+        AuthorsVm = (await ServiceManager.AuthorService.GetAuthorsAsync()).OrderBy(c => c.Name);
+    }
+}
