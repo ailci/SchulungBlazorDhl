@@ -1,24 +1,19 @@
+using Application.Contracts.Services;
 using Application.ViewModels.Qotd;
 using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace UI.Blazor.Components.Pages;
+
 public partial class Home
 {
-    [Inject] public QotdContext QotdContext { get; set; } = null!;
+    [Inject] public IQotdService QotdService { get; set; } = null!;
     public QuoteOfTheDayViewModel? QotdViewModel { get; set; }
     private readonly string _color = "text-primary";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        var authors = QotdContext.Authors.ToList();
-
-        QotdViewModel = new QuoteOfTheDayViewModel
-        {
-            AuthorName = "Ich",
-            AuthorDescription = "Dozent",
-            QuoteText = "Larum lierum Löffelstiel",
-            AuthorBirthDate = new DateOnly(2000, 07, 13)
-        };
+        QotdViewModel = await QotdService.GetQuoteOfTheDayAsync();
     }
 }

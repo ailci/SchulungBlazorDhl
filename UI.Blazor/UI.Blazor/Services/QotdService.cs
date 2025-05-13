@@ -1,0 +1,27 @@
+﻿using Application.Contracts.Services;
+using Application.ViewModels.Qotd;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+
+namespace UI.Blazor.Services;
+
+public class QotdService(QotdContext context) : IQotdService
+{
+    public async Task<QuoteOfTheDayViewModel> GetQuoteOfTheDayAsync()
+    {
+        var quotes = await context.Quotes.Include(c => c.Author).ToListAsync();
+        var random = new Random();
+        var randomQuote = quotes[random.Next(quotes.Count)];
+
+        return new QuoteOfTheDayViewModel
+        {
+            Id = randomQuote.Id,
+            AuthorName = randomQuote.Author?.Name ?? string.Empty,
+            AuthorDescription = randomQuote.Author?.Description ?? string.Empty,
+            QuoteText = randomQuote.QuoteText,
+            AuthorBirthDate = randomQuote.Author?.BirthDate,
+            AuthorPhoto = randomQuote.Author?.Photo,
+            AuthorPhotoMimeType = randomQuote.Author?.PhotoMimeType
+        };
+    }
+}

@@ -5,6 +5,7 @@ using Persistence;
 using UI.Blazor.Client.Pages;
 using UI.Blazor.Components;
 using UI.Blazor.Components.Account;
+using UI.Blazor.Components.Pages;
 using UI.Blazor.Configuration;
 using UI.Blazor.Data;
 using UI.Blazor.Middleware;
