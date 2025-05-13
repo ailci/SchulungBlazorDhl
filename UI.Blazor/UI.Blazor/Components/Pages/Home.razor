@@ -2,6 +2,9 @@
 @page "/index"
 @page "/home"
 
+@rendermode InteractiveServer
+@* @rendermode @(new InteractiveServerRenderMode(prerender: false)) *@
+
 <PageTitle>Quote of the Day</PageTitle>
 
 <CascadingValue Name="HeadingColor" Value="@_color">
