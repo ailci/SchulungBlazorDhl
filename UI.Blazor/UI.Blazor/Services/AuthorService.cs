@@ -7,10 +7,12 @@ using Persistence;
 
 namespace UI.Blazor.Services;
 
-public class AuthorService(QotdContext context) : IAuthorService
+public class AuthorService(IDbContextFactory<QotdContext> contextFactory) : IAuthorService
 {
     public async Task<IEnumerable<AuthorViewModel>> GetAuthorsAsync()
     {
+        await using var context = await contextFactory.CreateDbContextAsync();
+
         var authors = await context.Authors.ToListAsync();
         var authorViewModels = authors.Select(a => new AuthorViewModel
         {
