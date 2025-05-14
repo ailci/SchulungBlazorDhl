@@ -9,13 +9,15 @@ using UI.Blazor.Components.Pages;
 using UI.Blazor.ComponentsLibrary;
 using UI.Blazor.Configuration;
 using UI.Blazor.Data;
+using UI.Blazor.Hub;
 using UI.Blazor.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.AddBlazorConfig()
-       .AddAuthenticationConfig();
+       .AddAuthenticationConfig()
+       .AddSignalRConfig();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddComponentLibraryConfig();
@@ -68,5 +70,7 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+
+app.MapHub<AuthorLocalHub>("/authorLocalHub"); // Lokale Version mit BlazorServer als Hub
 
 app.Run();

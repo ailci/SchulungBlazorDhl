@@ -30,7 +30,7 @@ public partial class AuthorTable
         //}
 
         //3. Version
-        _confirmDialogComponent?.Show($"Wollen Sie wirklich den Autor '{authorVm.Name}' löschen?");
+        _confirmDialogComponent?.Show($"Wollen Sie wirklich den Autor <strong>'{authorVm.Name}'</strong> löschen?");
     }
 
     private async Task ConfirmDeleteClicked()

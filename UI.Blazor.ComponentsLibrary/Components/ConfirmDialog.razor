@@ -8,7 +8,7 @@
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" @onclick="() => OnConfirmChange(false)"></button>
                 </div>
                 <div class="modal-body">
-                    @ConfirmMessage
+                    @_convertedConfirmMessage
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => OnConfirmChange(false)">

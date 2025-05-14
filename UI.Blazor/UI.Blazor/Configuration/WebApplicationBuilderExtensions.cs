@@ -24,6 +24,13 @@ public static class WebApplicationBuilderExtensions
 
         return builder;
     }
+
+    public static WebApplicationBuilder AddSignalRConfig(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSignalR();
+
+        return builder;
+    }
     
     public static WebApplicationBuilder AddAuthenticationConfig(this WebApplicationBuilder builder)
     {
