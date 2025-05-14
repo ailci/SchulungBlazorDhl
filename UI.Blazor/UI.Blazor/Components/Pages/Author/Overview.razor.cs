@@ -17,4 +17,9 @@ public partial class Overview
     {
         AuthorsVm = (await ServiceManager.AuthorService.GetAuthorsAsync()).OrderBy(c => c.Name);
     }
+
+    private async Task DeleteAuthor(Guid authorId)
+    {
+        //TODO: Autor löschen implementieren (bool)
+    }
 }
