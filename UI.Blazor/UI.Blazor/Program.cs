@@ -6,6 +6,7 @@ using UI.Blazor.Client.Pages;
 using UI.Blazor.Components;
 using UI.Blazor.Components.Account;
 using UI.Blazor.Components.Pages;
+using UI.Blazor.ComponentsLibrary;
 using UI.Blazor.Configuration;
 using UI.Blazor.Data;
 using UI.Blazor.Middleware;
@@ -17,6 +18,7 @@ builder.AddBlazorConfig()
        .AddAuthenticationConfig();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.AddComponentLibraryConfig();
 
 var app = builder.Build();
 

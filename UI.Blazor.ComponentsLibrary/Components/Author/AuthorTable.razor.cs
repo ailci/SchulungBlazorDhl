@@ -6,13 +6,20 @@ namespace UI.Blazor.ComponentsLibrary.Components.Author;
 public partial class AuthorTable
 {
     [Inject] public IJSRuntime JsRuntime { get; set; } = null!;
+    [Inject] public DialogService DialogService { get; set; } = null!;
     [Parameter] public IEnumerable<AuthorViewModel>? AuthorViewModels { get; set; }
     [Parameter] public EventCallback<Guid> OnAuthorDelete { get; set; }
 
     private async Task ShowConfirmDialog(AuthorViewModel authorVm)
     {
         //1. Version Klassik
-        if (await JsRuntime.InvokeAsync<bool>("confirm", $"Wollen Sie wirklich den Autor '{authorVm.Name}' löschen?"))
+        //if (await JsRuntime.InvokeAsync<bool>("confirm", $"Wollen Sie wirklich den Autor '{authorVm.Name}' löschen?"))
+        //{
+        //    await OnAuthorDelete.InvokeAsync(authorVm.Id);
+        //}
+
+        //2. Version
+        if (await DialogService.ConfirmAsync($"Wollen Sie wirklich den Autor '{authorVm.Name}' löschen?"))
         {
             await OnAuthorDelete.InvokeAsync(authorVm.Id);
         }
