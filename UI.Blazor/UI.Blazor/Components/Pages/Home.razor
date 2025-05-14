@@ -11,7 +11,7 @@
 <CascadingValue Name="HeadingColor" Value="@_color">
     <QuoteOfTheDay Title="Spruch des Tages" QotdVm="@QotdViewModel">
         <LogOfQotd>
-            <div class="alert alert-dark">@QotdViewModel?.LogAsJson()</div>
+            <Alert Style="@Alert.AlertStyle.Dark">@QotdViewModel?.LogAsJson()</Alert>
         </LogOfQotd>
     </QuoteOfTheDay>
 </CascadingValue>
