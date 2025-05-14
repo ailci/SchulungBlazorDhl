@@ -1,14 +1,19 @@
 using Application.ViewModels.Author;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace UI.Blazor.ComponentsLibrary.Components.Author;
 public partial class AuthorTable
 {
-    [Parameter]
-    public IEnumerable<AuthorViewModel>? AuthorViewModels { get; set; }
+    [Inject] public IJSRuntime JsRuntime { get; set; } = null!;
+    [Parameter] public IEnumerable<AuthorViewModel>? AuthorViewModels { get; set; }
 
-    private Task ShowConfirmDialog(AuthorViewModel author)
+    private async Task ShowConfirmDialog(AuthorViewModel authorVm)
     {
-        return Task.CompletedTask;
+        //1. Version Klassik
+        if (await JsRuntime.InvokeAsync<bool>("confirm", $"Wollen Sie wirklich den Autor '{authorVm.Name}' löschen?"))
+        {
+            //TODO: Eltern benachrichtigen zum Löschen
+        }
     }
 }
