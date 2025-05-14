@@ -1,4 +1,5 @@
 using Application.Contracts.Services;
+using Application.Utilities;
 using Application.ViewModels.Qotd;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ namespace UI.Blazor.Components.Pages;
 
 public partial class Home : IDisposable
 {
+    [Inject] public ILogger<Home> Logger { get; set; } = null!;
     [Inject] public IServiceManager ServiceManager { get; set; } = null!;
     [Inject] public PersistentComponentState ApplicationState { get; set; } = null!;
     private PersistingComponentStateSubscription _persistingComponentStateSubscription;
@@ -23,6 +25,7 @@ public partial class Home : IDisposable
         {
             //Hol aus DB
             QotdViewModel = await ServiceManager.QotdService.GetQuoteOfTheDayAsync();
+            Logger.LogInformation($"QotdViewModel: {QotdViewModel.LogAsJson()}");
         }
         else
         {

@@ -1,6 +1,7 @@
 ﻿@page "/"
 @page "/index"
 @page "/home"
+@using Application.Utilities
 
 @rendermode InteractiveServer
 @* @rendermode @(new InteractiveServerRenderMode(prerender: false)) *@
@@ -8,6 +9,10 @@
 <PageTitle>Quote of the Day</PageTitle>
 
 <CascadingValue Name="HeadingColor" Value="@_color">
-    <QuoteOfTheDay Title="Spruch des Tages" QotdVm="@QotdViewModel"></QuoteOfTheDay>
+    <QuoteOfTheDay Title="Spruch des Tages" QotdVm="@QotdViewModel">
+        <LogOfQotd>
+            <div class="alert alert-dark">@QotdViewModel?.LogAsJson()</div>
+        </LogOfQotd>
+    </QuoteOfTheDay>
 </CascadingValue>
 
