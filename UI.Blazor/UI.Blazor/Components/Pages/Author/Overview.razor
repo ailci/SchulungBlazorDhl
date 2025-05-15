@@ -2,6 +2,13 @@
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
+
+<div class="row">
+    <div class="col">
+        <button class="btn btn-primary" @onclick="NavigateToAuthorNew">Neuer Autor</button>
+    </div>
+</div>
+
 <div class="row">
     <div class="col">
         <AuthorTable AuthorViewModels="AuthorsVm" OnAuthorDelete="DeleteAuthor"></AuthorTable>

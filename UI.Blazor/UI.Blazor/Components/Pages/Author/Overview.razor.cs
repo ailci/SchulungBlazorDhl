@@ -72,4 +72,9 @@ public partial class Overview : IAsyncDisposable
             await _hubConnection.DisposeAsync();
         }
     }
+
+    private void NavigateToAuthorNew()
+    {
+        NavManager.NavigateTo("/authors/new");
+    }
 }

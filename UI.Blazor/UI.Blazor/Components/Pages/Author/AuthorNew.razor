@@ -1,0 +1,67 @@
+﻿@page "/authors/new"
+
+@rendermode InteractiveServer
+
+<div class="row">
+    <div class="col">
+        <h4>Autor erstellen</h4>
+        <hr />
+    </div>
+</div>
+<div class="row align-items-center">
+    <div class="col-6">
+        <EditForm Model="AuthorForCreateVm" OnValidSubmit="HandleValidSubmit">
+            
+            <DataAnnotationsValidator />
+
+            <!-- Name -->
+            <div class="form-floating mb-3">
+                <InputText id="Name"
+                           class="form-control"
+                           @bind-Value="@AuthorForCreateVm!.Name"
+                           placeholder="">
+                </InputText>
+                <label for="Name">Name</label>
+                <ValidationMessage For="() => AuthorForCreateVm.Name"></ValidationMessage>
+            </div>
+
+            <!-- Description -->
+            <div class="form-floating mb-3">
+                <InputText id="Description"
+                           class="form-control"
+                           @bind-Value="@AuthorForCreateVm!.Description"
+                           placeholder="">
+                </InputText>
+                <label for="Description">Beschreibung</label>
+                <ValidationMessage For="() => AuthorForCreateVm.Description"></ValidationMessage>
+            </div>  
+            
+            <!-- BirthDate -->
+            <div class="form-floating mb-3">
+                <InputDate id="BirthDate"
+                           class="form-control"
+                           @bind-Value="@AuthorForCreateVm!.BirthDate"
+                           placeholder="">
+                </InputDate>
+                <label for="BirthDate">Geburtsdatum</label>
+                <ValidationMessage For="() => AuthorForCreateVm.BirthDate"></ValidationMessage>
+            </div> 
+            
+            <!-- Photo -->
+            <div class="form-floating mb-3">
+                <InputFile id="Photo" OnChange="OnInputFileChange"
+                           class="form-control"
+                           accept="image/png, image/jpeg, image/jpg, image/gif"
+                           @bind-Value="@AuthorForCreateVm!.Photo"
+                           placeholder="">
+                </InputFile>
+                <label for="Photo">Photo</label>
+                <ValidationMessage For="() => AuthorForCreateVm.Photo"></ValidationMessage>
+            </div>
+            
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">speichern</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
