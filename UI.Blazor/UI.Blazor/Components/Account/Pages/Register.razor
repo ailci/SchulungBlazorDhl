@@ -3,6 +3,7 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Text
 @using System.Text.Encodings.Web
+@using Application
 @using Application.Validations
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
@@ -15,6 +16,7 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject RoleManager<IdentityRole> RoleManager
 
 <PageTitle>Register</PageTitle>
 
@@ -28,14 +30,14 @@
             <h2>Create a new account.</h2>
             <hr />
             <ValidationSummary class="text-danger" role="alert" />
-            
+
             <!-- Custom -->
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.FirstName" id="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="" />
                 <label for="Input.FirstName">Vorname</label>
                 <ValidationMessage For="() => Input.FirstName" class="text-danger" />
             </div> 
-            
+
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.LastName" id="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" placeholder="" />
                 <label for="Input.LastName">Nachname</label>
@@ -94,6 +96,13 @@
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+        //Custom Felder setzen bevor User erstellt wird ###############################
+        user.FirstName = Input.FirstName;
+        user.LastName = Input.LastName;
+        user.DateOfBirth = Input.DateOfBirth;
+        user.DateJoined = DateOnly.FromDateTime(DateTime.UtcNow);
+
         var result = await UserManager.CreateAsync(user, Input.Password);
 
         if (!result.Succeeded)
@@ -103,6 +112,24 @@
         }
 
         Logger.LogInformation("User created a new account with password.");
+
+        // Set Role ##################################################################
+        if (!await RoleManager.RoleExistsAsync(RoleConstants.User))
+        {
+            var roleResult = await RoleManager.CreateAsync(new IdentityRole(RoleConstants.User));
+            if (!roleResult.Succeeded)
+            {
+                identityErrors = roleResult.Errors;
+                return;
+            }
+        }
+
+        var userAddedToRole = await UserManager.AddToRoleAsync(user, RoleConstants.User);
+        if (!userAddedToRole.Succeeded)
+        {
+            throw new Exception($"Cannot add user to role: {result.Errors.FirstOrDefault()}");
+        }
+        //####################################################################################################
 
         var userId = await UserManager.GetUserIdAsync(user);
         var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);

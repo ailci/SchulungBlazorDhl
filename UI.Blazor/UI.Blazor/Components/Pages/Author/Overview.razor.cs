@@ -1,6 +1,7 @@
 using Application.Contracts.Services;
 using Application.ViewModels.Author;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -10,15 +11,29 @@ public partial class Overview : IAsyncDisposable
     [Inject] public ILogger<Overview> Logger { get; set; } = null!;
     [Inject] public IServiceManager ServiceManager { get; set; } = null!;
     [Inject] public NavigationManager NavManager { get; set; } = null!;
+    [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+    [CascadingParameter] public Task<AuthenticationState>? AuthenticationState { get; set; }
     public IEnumerable<AuthorViewModel>? AuthorsVm { get; set; }
     private HubConnection? _hubConnection;
 
     protected override async Task OnInitializedAsync()
     {
-        //SignalR
+        //1. Variante
+        //var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        ////2. Variante
+        //var authState = await AuthenticationState;
+
+        //var user = authState?.User;
+
+        //if (user?.Identity is not null && user.Identity.IsAuthenticated)
+        //{
+        //    Logger.LogInformation($"Benutzer {user.Identity.Name} ist authentifiziert");
+        //    //SignalR
         await ActivateSignalR();
 
         await GetAuthors();
+        //}
     }
 
     public async Task GetAuthors()
