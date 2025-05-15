@@ -18,6 +18,7 @@ public partial class AuthorNew
         //TODO: Speichern
         return Task.CompletedTask;
     }
+
     private void OnInputFileChange(InputFileChangeEventArgs args)
     {
         AuthorForCreateVm!.Photo = args.File;

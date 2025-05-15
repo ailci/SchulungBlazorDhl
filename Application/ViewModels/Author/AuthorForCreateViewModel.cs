@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Validations;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace Application.ViewModels.Author;
@@ -21,7 +22,10 @@ public class AuthorForCreateViewModel
     [MinLength(2, ErrorMessage = "Die Beschreibung ist zu kurz")]
     public required string Description { get; set; }
 
+    [NoFutureDate(ErrorMessage = "Geburtsdatum liegt in der Zukunt")]
     [DataType(DataType.Date)]
     public DateOnly? BirthDate { get; set; }
+
+    [AllowedFileFormats(["jpg","jpeg","png","gif"])]
     public IBrowserFile? Photo { get; set; }
 }
