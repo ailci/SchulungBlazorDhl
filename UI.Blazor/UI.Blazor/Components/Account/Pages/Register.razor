@@ -28,6 +28,27 @@
             <h2>Create a new account.</h2>
             <hr />
             <ValidationSummary class="text-danger" role="alert" />
+            
+            <!-- Custom -->
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.FirstName" id="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="" />
+                <label for="Input.FirstName">Vorname</label>
+                <ValidationMessage For="() => Input.FirstName" class="text-danger" />
+            </div> 
+            
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.LastName" id="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" placeholder="" />
+                <label for="Input.LastName">Nachname</label>
+                <ValidationMessage For="() => Input.LastName" class="text-danger" />
+            </div>
+
+            <div class="form-floating mb-3">
+                <InputDate @bind-Value="Input.DateOfBirth" id="Input.DateOfBirth" class="form-control" autocomplete="dateofbirth" aria-required="true" placeholder="" />
+                <label for="Input.DateOfBirth">Geburtsdatum</label>
+                <ValidationMessage For="() => Input.DateOfBirth" class="text-danger" />
+            </div>
+            <!-- END Custom -->
+
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label for="Input.Email">Email</label>
