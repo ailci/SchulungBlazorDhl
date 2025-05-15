@@ -3,6 +3,7 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Text
 @using System.Text.Encodings.Web
+@using Application.Validations
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using UI.Blazor.Data
@@ -141,5 +142,23 @@
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";
+
+        //Custom #############################################################
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+        [Display(Name = "Vorname")]
+        public string FirstName { get; set; } = "";
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+        [Display(Name = "Nachname")]
+        public string LastName { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Geburtsdatum")]
+        [NoFutureDate(ErrorMessage = "Geburtsdatum liegt in der Zukunft")]
+        public DateOnly DateOfBirth { get; set; }
+
     }
 }
