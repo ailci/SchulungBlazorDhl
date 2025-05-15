@@ -13,7 +13,10 @@ public static class WebApplicationBuilderExtensions
     public static WebApplicationBuilder AddBlazorConfig(this WebApplicationBuilder builder)
     {
         builder.Services.AddRazorComponents() //Componenten
-            .AddInteractiveServerComponents()  //Blazor Server
+            .AddInteractiveServerComponents(options =>
+            {
+                options.DetailedErrors = builder.Environment.IsDevelopment();
+            }) 
             .AddInteractiveWebAssemblyComponents() // Blazor WebAssembly
             .AddAuthenticationStateSerialization();
 

@@ -11,4 +11,5 @@ public interface IAuthorService
 {
     Task<IEnumerable<AuthorViewModel>> GetAuthorsAsync();
     Task<bool> DeleteAuthorAsync(Guid authorId);
+    Task<AuthorViewModel> AddAuthorAsync(AuthorForCreateViewModel authorForCreateViewModel);
 }

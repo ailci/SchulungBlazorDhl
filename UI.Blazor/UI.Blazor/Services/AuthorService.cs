@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Services;
+using Application.Utilities;
 using Application.ViewModels.Author;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -37,5 +38,38 @@ public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<Qotd
 
         context.Authors.Remove(authorEntity);
         return await context.SaveChangesAsync() > 0;
+    }
+
+    public async Task<AuthorViewModel> AddAuthorAsync(AuthorForCreateViewModel authorForCreateViewModel)
+    {
+        logger.LogInformation($"{nameof(AddAuthorAsync)} mit AuthorForCreate: {authorForCreateViewModel.LogAsJson()} aufgerufen...");
+        await using var context = await contextFactory.CreateDbContextAsync();
+
+        var authorEntity = new Author
+        {
+            Name = authorForCreateViewModel.Name,
+            Description = authorForCreateViewModel.Description,
+            BirthDate = authorForCreateViewModel.BirthDate
+        };
+
+        if (authorForCreateViewModel.Photo is not null)
+        {
+            (authorEntity.Photo, authorEntity.PhotoMimeType) = await authorForCreateViewModel.Photo.GetFile();
+            //(var fileContent, var fileContentType) = await authorForCreateViewModel.Photo.GetFile();
+            //authorEntity.Photo = fileContent;
+            //authorEntity.PhotoMimeType = fileContentType;
+        }
+
+        await context.Authors.AddAsync(authorEntity);
+        await context.SaveChangesAsync();
+
+        return new AuthorViewModel
+        {
+            Name = authorEntity.Name,
+            Description = authorEntity.Description,
+            BirthDate = authorEntity.BirthDate,
+            PhotoMimeType = authorEntity.PhotoMimeType,
+            Photo = authorEntity.Photo
+        };
     }
 }
