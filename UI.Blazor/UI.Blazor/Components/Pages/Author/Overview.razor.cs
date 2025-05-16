@@ -1,5 +1,7 @@
+using Application;
 using Application.Contracts.Services;
 using Application.ViewModels.Author;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -13,6 +15,7 @@ public partial class Overview : IAsyncDisposable
     [Inject] public NavigationManager NavManager { get; set; } = null!;
     [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
     [CascadingParameter] public Task<AuthenticationState>? AuthenticationState { get; set; }
+    [Inject] public IAuthorizationService AuthorizationService { get; set; } = null!;
     public IEnumerable<AuthorViewModel>? AuthorsVm { get; set; }
     private HubConnection? _hubConnection;
 
@@ -30,9 +33,19 @@ public partial class Overview : IAsyncDisposable
         //{
         //    Logger.LogInformation($"Benutzer {user.Identity.Name} ist authentifiziert");
         //    //SignalR
-        await ActivateSignalR();
+        //}
 
-        await GetAuthors();
+        //3. Variante
+        //var authState = await AuthenticationState;
+        //var authorizationResult =
+        //    await AuthorizationService.AuthorizeAsync(authState.User, PolicyConstants.IsAtLeastProfessionEmployee);
+
+        //if (authorizationResult.Succeeded)
+        //{
+        //    Logger.LogInformation($"Benutzer {authState.User.Identity?.Name} ist berechtigt");
+            await ActivateSignalR();
+
+            await GetAuthors();
         //}
     }
 
@@ -45,15 +58,25 @@ public partial class Overview : IAsyncDisposable
     {
         Logger.LogInformation($"Autor löschen aufgerufen mit Id: {authorId}");
 
-        var isDeleted = await ServiceManager.AuthorService.DeleteAuthorAsync(authorId);
+        var authState = await AuthenticationState;
+        var authorizationResult = await AuthorizationService.AuthorizeAsync(authState.User, authorId, PolicyConstants.NoOneIsAllowedToDeleteDefaultAuthors);
 
-        if (isDeleted)
+        if (authorizationResult.Succeeded)
         {
-            if (_hubConnection is not null && _hubConnection.State == HubConnectionState.Connected)
+            var isDeleted = await ServiceManager.AuthorService.DeleteAuthorAsync(authorId);
+
+            if (isDeleted)
             {
-                await _hubConnection.SendAsync("UpdatedAuthors", $"Autor mit Id {authorId} gelöscht...");
+                if (_hubConnection is not null && _hubConnection.State == HubConnectionState.Connected)
+                {
+                    await _hubConnection.SendAsync("UpdatedAuthors", $"Autor mit Id {authorId} gelöscht...");
+                }
+                //await GetAuthors();
             }
-            //await GetAuthors();
+        }
+        else
+        {
+            Logger.LogError("Benutzer ist nicht berechtigt den Autor zu löschen");
         }
     }
 

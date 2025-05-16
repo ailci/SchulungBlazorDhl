@@ -72,10 +72,17 @@ public static class WebApplicationBuilderExtensions
             options.AddPolicy(PolicyConstants.IsAtLeastProfessionEmployee, policy =>
             {
                 policy.Requirements.Add(new ProfessionRequirement(Profession.Employee));
+            }); 
+            
+            options.AddPolicy(PolicyConstants.NoOneIsAllowedToDeleteDefaultAuthors, policy =>
+            {
+                policy.RequireRole(RoleConstants.User);
+                policy.Requirements.Add(new NoOneIsAllowedToDeleteDefaultAuthorsRequirement());
             });
         });
 
         builder.Services.AddTransient<IAuthorizationHandler, ProfessionHandler>();
+        builder.Services.AddTransient<IAuthorizationHandler, NoOneIsAllowedToDeleteDefaultAuthorsHandler>();
 
 
 

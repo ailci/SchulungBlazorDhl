@@ -11,5 +11,6 @@ public static class PolicyConstants
     public const string RequireAdminRole = "RequireAdminRole";
     public const string RequireUserRole = "RequireUserRole";
     public const string IsAtLeastProfessionEmployee = "IsAtLeastProfessionEmployee";
+    public const string NoOneIsAllowedToDeleteDefaultAuthors = "NoOneIsAllowedToDeleteDefaultAuthors";
 
 }
