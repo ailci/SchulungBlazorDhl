@@ -5,7 +5,7 @@ using System.Net.Http;
 
 namespace UI.Blazor.Client.Services;
 
-public class QotdApiService(ILogger<QotdApiService> logger, IHttpClientFactory clientFactory) : IQotdService
+public class QotdApiService(ILogger<QotdApiService> logger, HttpClient client) : IQotdService
 {
     private const string QotdUri = "api/qotd";
 
@@ -13,7 +13,7 @@ public class QotdApiService(ILogger<QotdApiService> logger, IHttpClientFactory c
     {
         logger.LogInformation($"{nameof(GetQuoteOfTheDayAsync)} aufgerufen...");
 
-        var client = clientFactory.CreateClient("qotdapiservice");
+        //var client = clientFactory.CreateClient("qotdapiservice");
         return await client.GetFromJsonAsync<QuoteOfTheDayViewModel>(QotdUri);
     }
 }
