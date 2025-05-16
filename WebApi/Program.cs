@@ -13,6 +13,15 @@ builder.Services.AddOpenApi();
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddScoped<IQotdService, QotdDbService>();
 
+//Cors
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(opt =>
+    {
+        opt.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

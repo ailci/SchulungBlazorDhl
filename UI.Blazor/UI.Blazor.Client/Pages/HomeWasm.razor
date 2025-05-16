@@ -1,0 +1,13 @@
+﻿@page "/homewasm"
+
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+
+<PageTitle>Quote of the Day</PageTitle>
+
+<CascadingValue Name="HeadingColor" Value="@_color">
+    <QuoteOfTheDay Title="Spruch des Tages" QotdVm="@QotdViewModel">
+        <LogOfQotd>
+            <Alert Style="@Alert.AlertStyle.Dark">@QotdViewModel?.LogAsJson()</Alert>
+        </LogOfQotd>
+    </QuoteOfTheDay>
+</CascadingValue>
