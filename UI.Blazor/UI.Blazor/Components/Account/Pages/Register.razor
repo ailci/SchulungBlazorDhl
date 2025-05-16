@@ -49,6 +49,18 @@
                 <label for="Input.DateOfBirth">Geburtsdatum</label>
                 <ValidationMessage For="() => Input.DateOfBirth" class="text-danger" />
             </div>
+            
+            <div class="form-floating mb-3">
+                <InputSelect @bind-Value="Input.Profession" id="Input.Profession" class="form-select" autocomplete="profession" aria-required="true">
+                    @foreach (var profession in Enum.GetValues(typeof(Profession)))
+                    {
+                        <option value="@profession">@profession</option>
+                    }
+                </InputSelect>
+                <label for="Input.Profession">Profession</label>
+                <ValidationMessage For="() => Input.Profession" class="text-danger" />
+            </div>
+
             <!-- END Custom -->
 
             <div class="form-floating mb-3">
@@ -207,6 +219,10 @@
         [Display(Name = "Geburtsdatum")]
         [NoFutureDate(ErrorMessage = "Geburtsdatum liegt in der Zukunft")]
         public DateOnly DateOfBirth { get; set; }
+
+        [Required]
+        [Display(Name = "Profession")]
+        public Profession Profession { get; set; }
 
     }
 }
