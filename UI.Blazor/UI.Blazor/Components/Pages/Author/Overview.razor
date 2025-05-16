@@ -5,13 +5,22 @@
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 @* @attribute [Authorize] *@
-@attribute [Authorize(Roles = RoleConstants.User)]
+@* @attribute [Authorize(Roles = RoleConstants.User)] *@
+@* @attribute [Authorize(Policy = PolicyConstants.IsAtLeastProfessionEmployee)] *@
 
-<div class="row">
-    <div class="col">
-        <button class="btn btn-primary" @onclick="NavigateToAuthorNew">Neuer Autor</button>
-    </div>
-</div>
+
+<AuthorizeView Policy="@PolicyConstants.IsAtLeastProfessionEmployee">
+    <Authorized>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary" @onclick="NavigateToAuthorNew">Neuer Autor</button>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div>Du kommst hier nicht rein</div>
+    </NotAuthorized>
+</AuthorizeView>
 
 <div class="row">
     <div class="col">

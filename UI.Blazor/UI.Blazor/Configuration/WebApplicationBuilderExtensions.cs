@@ -1,4 +1,7 @@
-﻿using Application.Contracts.Services;
+﻿using Application;
+using Application.Contracts.Services;
+using Application.Policy;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +64,20 @@ public static class WebApplicationBuilderExtensions
             .AddDefaultTokenProviders();
 
         builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+        //Policy
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy(PolicyConstants.RequireAdminRole, policy => policy.RequireRole(RoleConstants.Admin));
+            options.AddPolicy(PolicyConstants.IsAtLeastProfessionEmployee, policy =>
+            {
+                policy.Requirements.Add(new ProfessionRequirement(Profession.Employee));
+            });
+        });
+
+        builder.Services.AddTransient<IAuthorizationHandler, ProfessionHandler>();
+
+
 
         return builder;
     }
