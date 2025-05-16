@@ -1,6 +1,7 @@
 ﻿@page "/Account/Register"
 
 @using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
 @using System.Text
 @using System.Text.Encodings.Web
 @using Application
@@ -49,7 +50,7 @@
                 <label for="Input.DateOfBirth">Geburtsdatum</label>
                 <ValidationMessage For="() => Input.DateOfBirth" class="text-danger" />
             </div>
-            
+
             <div class="form-floating mb-3">
                 <InputSelect @bind-Value="Input.Profession" id="Input.Profession" class="form-select" autocomplete="profession" aria-required="true">
                     @foreach (var profession in Enum.GetValues(typeof(Profession)))
@@ -139,9 +140,16 @@
         var userAddedToRole = await UserManager.AddToRoleAsync(user, RoleConstants.User);
         if (!userAddedToRole.Succeeded)
         {
-            throw new Exception($"Cannot add user to role: {result.Errors.FirstOrDefault()}");
+            throw new Exception($"Cannot add user to role: {userAddedToRole.Errors.FirstOrDefault()}");
         }
-        //####################################################################################################
+        // SET CLAIM ###############################################################################
+        var claimProfession = new Claim(nameof(Profession), Input.Profession.ToString());
+        var addedClaimToUser = await UserManager.AddClaimAsync(user, claimProfession);
+        if (!addedClaimToUser.Succeeded)
+        {
+            throw new Exception($"Cannot add user to role: {addedClaimToUser.Errors.FirstOrDefault()}");
+        }
+        //##########################################################################################
 
         var userId = await UserManager.GetUserIdAsync(user);
         var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
