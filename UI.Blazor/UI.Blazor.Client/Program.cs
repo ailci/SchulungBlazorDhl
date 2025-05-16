@@ -1,10 +1,14 @@
+using Application.Contracts.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using UI.Blazor.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthenticationStateDeserialization();
+
+builder.Services.AddScoped<IQotdService, QotdApiService>();
 
 //Named-Http-Client
 builder.Services.AddHttpClient("qotdapiservice", options =>
